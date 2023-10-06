@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.coolrinet.criminalintent.databinding.FragmentCrimeDetailBinding
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import java.util.UUID
 
 class CrimeDetailFragment : Fragment() {
@@ -48,7 +50,7 @@ class CrimeDetailFragment : Fragment() {
             }
 
             crimeDate.apply {
-                text = crime.date.toString()
+                text = SimpleDateFormat("EEEE, MMMM d, y", Locale.US).format(crime.date)
                 isEnabled = false
             }
 
