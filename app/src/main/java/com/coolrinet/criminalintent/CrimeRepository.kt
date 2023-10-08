@@ -14,7 +14,8 @@ class CrimeRepository private constructor(context: Context){
             context.applicationContext,
             CrimeDatabase::class.java,
             DATABASE_NAME
-        ).build()
+        ).createFromAsset(DATABASE_NAME)
+        .build()
 
     suspend fun getCrimes(): List<Crime> = database.crimeDao().getCrimes()
     suspend fun getCrime(id: UUID): Crime = database.crimeDao().getCrime(id)
@@ -27,10 +28,10 @@ class CrimeRepository private constructor(context: Context){
                 INSTANCE = CrimeRepository(context)
             }
         }
-    }
 
-    fun get(): CrimeRepository {
-        return INSTANCE ?:
-        throw IllegalStateException("CrimeRepository must be initialized")
+        fun get(): CrimeRepository {
+            return INSTANCE ?:
+            throw IllegalStateException("CrimeRepository must be initialized")
+        }
     }
 }
