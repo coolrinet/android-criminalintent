@@ -8,8 +8,13 @@ import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.coolrinet.criminalintent.databinding.FragmentCrimeDetailBinding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -54,10 +59,28 @@ class CrimeDetailFragment : Fragment() {
 
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                crimeDetailViewModel.crime.collect { crime ->
+                    crime?.let { updateUi(it) }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun updateUi(crime: Crime) {
+        binding.apply {
+            if (crimeTitle.text.toString() != crime.title) {
+                crimeTitle.setText(crime.title)
+            }
+            crimeDate.text = SimpleDateFormat("EEEE, MMMM d, y", Locale.US).format(crime.date)
+            crimeSolved.isChecked = crime.isSolved
+        }
     }
 }
