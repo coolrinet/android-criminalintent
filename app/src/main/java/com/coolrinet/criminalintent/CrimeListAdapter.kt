@@ -4,7 +4,6 @@ import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.coolrinet.criminalintent.databinding.ListItemCrimeBinding
 import java.util.Locale
@@ -17,11 +16,7 @@ class CrimeHolder(
         binding.crimeDate.text = SimpleDateFormat("EEEE, MMMM d, y", Locale.US).format(crime.date)
 
         binding.root.setOnClickListener {
-            Toast.makeText(
-                binding.root.context,
-                "${crime.title} clicked!",
-                Toast.LENGTH_SHORT
-            ).show()
+            onCrimeClicked()
         }
 
         binding.crimeSolved.visibility = if (crime.isSolved) {
