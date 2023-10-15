@@ -21,8 +21,7 @@ class CrimeRepository private constructor(
             context.applicationContext,
             CrimeDatabase::class.java,
             DATABASE_NAME
-        ).createFromAsset(DATABASE_NAME)
-        .build()
+        ).build()
 
     fun getCrimes(): Flow<List<Crime>> = database.crimeDao().getCrimes()
     suspend fun getCrime(id: UUID): Crime = database.crimeDao().getCrime(id)
